@@ -1,0 +1,23 @@
+runtime: nodejs
+env: flexible
+
+manual_scaling:
+  instances: 1
+resources:
+  cpu: 1
+  memory_gb: 0.5
+  disk_size_gb: 10
+
+handlers:
+
+  - url: /
+    static_files: public/index.html
+    upload: public/index.html
+
+  - url: /public/static/(.*)
+    static_files: public/static/\1
+    upload: public/static/(.*)
+
+  - url: /(.*)
+    static_files: public/\1
+    upload: public/(.*)
