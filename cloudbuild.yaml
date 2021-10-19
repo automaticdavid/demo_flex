@@ -1,0 +1,43 @@
+steps:
+
+# Build the frontend container image
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/webshop-329416/webshop-frontend', '-f', 'microservices/src/frontend', '.']
+
+# Build the orders container image
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/webshop-329416/webshop-orders', '-f', 'microservices/src/orders', '.']
+
+# Build the products container image
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/webshop-329416/webshop-products', '-f', 'microservices/src/products', '.']
+
+
+# Push the container image to Container Registry
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/webshop-329416/webshop-frontend']
+
+# Push the container image to Container Registry
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/webshop-329416/webshop-orders']
+
+# Push the container image to Container Registry
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/webshop-329416/webshop-products']
+
+
+# Deploy container image to Cloud Run
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: gcloud
+  args: ['run', 'deploy', '', '--image', 'gcr.io/webshop-329416/webshop-frontend', '--region', 'europe-west3']
+
+# Deploy container image to Cloud Run
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: gcloud
+  args: ['run', 'deploy', '', '--image', 'gcr.io/webshop-329416/webshop-orders', '--region', 'europe-west3']
+
+# Deploy container image to Cloud Run
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: gcloud
+  args: ['run', 'deploy', '', '--image', 'gcr.io/webshop-329416/webshop-products', '--region', 'europe-west3']
+
